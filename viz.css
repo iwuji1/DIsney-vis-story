@@ -1,0 +1,58 @@
+body{
+	background-color: #fff;
+	width: 100%;
+}
+
+.chart-container{
+  display: inline-flex;
+}
+#chart{
+    background-color: #ccc;
+    width: 1000px;
+    height: 500px;
+    margin: 50px auto;
+}
+svg{
+	background-color: #fff;
+}
+
+circle{
+	
+}
+
+.node:hover{
+  stroke-width: 5px !important;
+  opacity: 1 !important;
+}
+
+.tooltip{
+  position: absolute;
+  text-align: center;			
+  padding: 2px;
+  background: lightsteelblue;	
+  pointer-events: none;	
+}
+
+#sections {
+position: relative;
+display: inline-block;
+width: 250px;
+top: 0px;
+z-index: 90;
+}
+
+.step {
+margin-bottom: 200px;
+}
+
+#vis {
+display: inline-block;
+position: fixed;
+top: 60px;
+z-index: 1;
+margin-left: 0;
+
+height: 600px;
+width: 600px;
+background-color: #ddd;
+}
