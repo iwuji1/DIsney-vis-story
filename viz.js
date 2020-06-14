@@ -33,6 +33,10 @@ var treesvg = d3.select('#tm1')
 	.attr('width', chartwidth + 'px')
 	.attr('height', chartheight + 'px');
 
+var circsvg = d3.select('#crcs')
+	.append('svg')
+	.attr('width', chartwidth + margin.left + margin.right + 'px')
+	.attr('height', chartheight + margin.top + margin.bottom + 'px');
 // line Chart 
 d3.csv("disney_movies_groups.csv"). then(function(dataForChart){
 	var xMinMax = d3.extent(dataForChart, function(d){return d.release_date});
@@ -72,7 +76,7 @@ d3.csv("disney_movies_groups.csv"). then(function(dataForChart){
 		return parseInt(d.inflation_adjusted_gross/100000)
 	})
 	var xScale = d3.scaleLinear()
-		.range([0,250])
+		.range([0,300])
 		.domain([xMinMax[0], xMinMax[1]])
 
 	var yScale = d3.scaleBand()
@@ -82,7 +86,8 @@ d3.csv("disney_movies_groups.csv"). then(function(dataForChart){
 
 	subdat = d3.nest()
 	.key(function(d) { return d.time; })
-	.rollup(function(v) { return d3.sum(v, function(d) {return d.inflation_adjusted_gross/100000}); })
+	.rollup(function(v) { return d3.mean(v, function(d) {return parseInt(d.inflation_adjusted_gross/10000)}); })
+	.sortValues(function(a,b) {return parseInt(a.value) - parseInt(b.value); })
 	.entries(dataForChart);
 
 	console.log(subdat)
@@ -115,6 +120,53 @@ d3.csv("disney_movies_groups.csv"). then(function(dataForChart){
 		});
 });
 
+d3.csv('disney_movies_groups.csv').then(function(dataForChart){
+	var rMinMax = d3.extent(dataForChart, function(d){
+		return parseInt(d.total_gross/100000)
+	})
+
+	var rScale = d3.scaleLinear()
+		.domain([rMinMax[0], rMinMax[1]])
+		.range([0,100])
+
+	var xband = d3.scaleBand()
+		.domain(genre)
+		.range([0, chartwidth])
+		.padding(0.5)
+
+	subdat = d3.nest()
+		.key(function(d) { return d.genre; })
+		.rollup(function(v) { return d3.mean(v, function(d) {return d.inflation_adjusted_gross/100000}); })
+		.entries(dataForChart)
+		.sort(function(a, b){ return d3.descending(a.value, b.value); });
+
+	console.log(subdat)
+
+	circsvg.selectAll(".circ")
+		.data(subdat)
+		.enter().append("circle")
+		.attr("class", "circ")
+		.attr("r", function(d) {return rScale(d.value)})
+		.attr("cx", function(d) {return xband(d.key)})
+		.attr("cy", chartheight/2)
+		.style('fill', function(d) { return color(d.key)})
+
+
+	circsvg.selectAll('.label')
+		.data(subdat)
+		.enter().append('text')
+		.attr('class', 'label')
+		.attr('y', (chartwidth/2) + 20)
+		.attr('x', function(d){
+			return xband(d.key) + xband.bandwidth()-100;
+		})
+		.text(function(d) {
+			return d.key;
+		});
+
+
+})
+
 
 /// Custom chart
 d3.csv("disney_movies_groups.csv"). then(function(dataForChart){
@@ -122,7 +174,7 @@ d3.csv("disney_movies_groups.csv"). then(function(dataForChart){
 			return parseInt(d.total_gross/100000)
 		})
 
-		rScale = d3.scaleLinear()
+		var rScale = d3.scaleLinear()
 			.domain([rMinMax[0], rMinMax[1]])
 			.range([0,60])
 
