@@ -47,6 +47,7 @@ d3.csv("disney_movies_groups.csv"). then(function(dataForChart){
 	var sumstat = d3.nest()
 				.key(function(d){ return d.release_date})
 				.entries(dataForChart);
+	console.log(sumstat)
 
 	linesvg.append("g")
 		.selectAll("dot")
@@ -64,6 +65,54 @@ d3.csv("disney_movies_groups.csv"). then(function(dataForChart){
 	linesvg.append("g")
 			.call(d3.axisLeft(yScale));
 
+});
+
+d3.csv("disney_movies_groups.csv"). then(function(dataForChart){
+	var xMinMax = d3.extent(dataForChart, function(d){ 
+		return parseInt(d.inflation_adjusted_gross/100000)
+	})
+	var xScale = d3.scaleLinear()
+		.range([0,250])
+		.domain([xMinMax[0], xMinMax[1]])
+
+	var yScale = d3.scaleBand()
+		.domain(times)
+		.range([0, chartwidth])
+		.padding(0.1)
+
+	subdat = d3.nest()
+	.key(function(d) { return d.time; })
+	.rollup(function(v) { return d3.sum(v, function(d) {return d.inflation_adjusted_gross/100000}); })
+	.entries(dataForChart);
+
+	console.log(subdat)
+
+	treesvg.selectAll(".bar")
+		.data(subdat)
+		.enter().append("rect")
+		.attr("class", "bar")
+		.attr("x", 0)
+		.attr('width', function(d) {return xScale(d.value)})
+		.attr('y', function(d) {return yScale(d.key)})
+		.attr('height', yScale.bandwidth())
+		.style('fill', function(d) {return color2(d.key)});
+
+	treesvg.append("g")
+		.call(d3.axisLeft(yScale));
+
+	treesvg.selectAll('.label')
+		.data(subdat)
+		.enter().append('text')
+		.attr('class', 'label')
+		.attr('y', function(d){
+			return yScale(d.key) + yScale.bandwidth() /2+4;
+		})
+		.attr('x', function(d){
+			return xScale(d.value) + 3;
+		})
+		.text(function(d) {
+			return d.key;
+		});
 });
 
 
