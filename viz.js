@@ -1,5 +1,5 @@
 var dataset, simulation, nodes;
-var chartwidth = 1000, chartheight = 1000;
+var chartwidth = 800, chartheight = 800;
 var blob;
 var circles, rad = 10, disavg, parseYear;
 
@@ -67,7 +67,7 @@ d3.csv("disney_movies_groups.csv", function(d){
 function createScales(){
 	genreScale = d3.scaleOrdinal().domain(genre).range(d3.schemeCategory10)
 	periodScale = d3.scaleOrdinal().domain(times).range(d3.schemeCategory10)
-	salesScale = d3.scaleLinear().domain(d3.extent(dataset, function(d){return parseInt(d.Sales/100000)})).range([0,60])
+	salesScale = d3.scaleLinear().domain(d3.extent(dataset, function(d){return parseInt(d.Sales/100000)})).range([5,60])
 	releaseScale = d3.scaleLinear().domain(d3.extent(dataset, function(d){return d.Releasedate})).range([0,chartwidth])
 	percapitaScale = d3.scaleLinear().domain(d3.extent(subdat, function(d){return parseInt(d.value.percapita)})).range([height,0])
 	genreband = d3.scaleBand().domain(genre).range([0, width]).padding(0.5)
@@ -116,46 +116,53 @@ function drawInitial(){
 					.attr('width', 1000)
 					.attr('height', 950)
 					.attr('opacity', 1)
+
 	let xaxis = svg.append("g")
 				.attr("transform", "translate(0," + chartheight + ")")
 				.call(d3.axisBottom(releaseScale));
 
 	let yaxis = svg.append("g")
-					.call(d3.axisLeft(yScale));
+					.call(d3.axisLeft(yScale))
+
+	// svg.selectAll("circle")
+	// 	.data(datestat)
+	// 	.enter()
+	// 	.append("circle")
+	// 	.attr("r", 5)
+	// 	.attr("cx", function(d) {return releaseScale(d.key)})
+	// 	.attr("cy", function(d) {return yScale(d.values.length)});
 
 	//Get forces ready for cluster chart
 
-// 	simulation = d3.forceSimulation(dataset)
-// 	simulation
-// 	    .nodes(dataset)
-// 	    .on("tick", function(d){
-// 	    nodes
-// 	      .attr("cx", function(d){ return d.x; })
-// 	      .attr("cy", function(d){ return d.y; })
-// 	    });
-// 	simulation.stop()
+	// simulation = d3.forceSimulation(dataset)
+	// simulation
+	//     .nodes(dataset)
+	//     .on("tick", function(d){
+	//     nodes
+	//       .attr("cx", function(d){ return d.x; })
+	//       .attr("cy", function(d){ return d.y; })
+	//     });
+	// simulation.stop()
 
-// 	nodes = svg.append("g")
-// 		.selectAll("circle")
-// 		.data(dataset)
-// 		.enter()
-// 		.append("circle")
-// 			.attr("class", function(d) {return d.Genre})
-// 			.attr("r", function(d) {return salesScale(d.Sales/100000)})
-// 			.attr("cx", chartwidth/2)
-// 			.attr("cy", chartheight/2)
-// 			.style('opacity', 0.7)
-// 			.style("fill", function(d){ return genreScale(d.Genre)})
-// 			.style("stroke", function(d){return genreScale(d.Genre)})
-// 			.style("stroke-width", 1 +"px")
-// }
+	// nodes = svg.append("g")
+	// 	.selectAll("circle")
+	// 	.data(dataset)
+	// 	.enter()
+	// 	.append("circle")
+	// 		.attr("class", function(d) {return d.Genre})
+	// 		.attr("r", function(d) {return salesScale(d.Sales/100000)})
+	// 		.attr("cx", chartwidth/2)
+	// 		.attr("cy", chartheight/2)
+	// 		.style('opacity', 0.7)
+	// 		.style("fill", function(d){ return genreScale(d.Genre)})
+	// 		.style("stroke", function(d){return genreScale(d.Genre)})
+	// 		.style("stroke-width", 1 +"px")
+}
 
 // function clean(chartType){
 // 	let svg = d3.select
-}
 
 function draw1() {
-	simulation.stop()
 
 	let svg = d3.select("#vis")
 					.select('svg')
@@ -165,7 +172,6 @@ function draw1() {
 	svg.selectAll("circle")
 		.data(datestat)
 		.enter()
-		// .transition().duration(500).delay(100)
 		.append("circle")
 		.attr("r", 5)
 		.attr("cx", function(d) {return releaseScale(d.key)})
@@ -175,13 +181,41 @@ console.log("what")
 }
 
 function draw2(){
+
 	let svg = d3.select("#vis").select('svg')
 
-
 	svg.selectAll('circle')
+		.data(dataset)
+		.enter()
+		.append("circle")
 		.transition().duration(300)
-		.attr("r", function(d) {return salesScale(d.Sales/100000)})
+		.attr("r", function(d) {return salesScale((d.Sales/100000))})
+		.attr("cx", chartwidth/2)
+		.attr("cy", chartheight/2)
 		.style("fill", function(d){ return genreScale(d.Genre)})
+
+	simulation = d3.forceSimulation(dataset)
+	simulation
+	    .nodes(dataset)
+	    .on("tick", function(d){
+	    nodes
+	      .attr("cx", function(d){ return d.x; })
+	      .attr("cy", function(d){ return d.y; })
+	    });
+
+	nodes = svg.append("g")
+		.selectAll("circle")
+		.data(dataset)
+		.enter()
+		.append("circle")
+			.attr("class", function(d) {return d.Genre})
+			.attr("r", function(d) {return salesScale(d.Sales/100000)})
+			.attr("cx", chartwidth/2)
+			.attr("cy", chartheight/2)
+			.style('opacity', 0.7)
+			.style("fill", function(d){ return genreScale(d.Genre)})
+			.style("stroke", function(d){return genreScale(d.Genre)})
+			.style("stroke-width", 1 +"px")
 
 	simulation = d3.forceSimulation(dataset)
 		.force('charge', d3.forceManyBody().strength([2]))
@@ -197,8 +231,10 @@ function draw2(){
 }
 
 function draw3(){
+	console.log("when")
 	let svg = d3.select("#vis").select('svg')
 
+	console.log("when-2")
 	svg.selectAll('circle')
 		.data(subdat)
 		.enter().append("circle")
@@ -208,9 +244,11 @@ function draw3(){
 		.attr("cx", function(d) {return genreband(d.key)})
 		.attr("cy", function(d) {return yScale(d.value.percapita)})
 		.style("fill", function(d) {return genreScale(d.key)})
+	console.log("when-3")
 }
 
 function draw4(){
+	console.log("woo")
 	let svg = d3.select("#vis").select('svg')
 
 	svg.selectAll('circle')
