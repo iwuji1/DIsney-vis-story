@@ -23,12 +23,6 @@
 		<div class="hist-container">
 		<div id="hist-chart"></div>
 		</div>
-		<div class="Tree-map-1">
-			<div id="tm1"></div>
-		</div>
-		<div class="circle-scale">
-			<div id="crcs"></div>
-		</div>
 		<div>
 			<button onclick="changelegend(color2)">By Period</button>
 			<button onclick="changelegend(color)">By Genre</button>
@@ -37,7 +31,7 @@
 			<div id="chart"></div>
 			<svg id="legend" height=1000></svg>
 		</div>
-	<script type="text/javascript" src="viz.js"></script>
+	<script type="text/javascript" src="viz2.js"></script>
 </body>
 </html> -->
 
@@ -55,36 +49,33 @@
 <body>
 	<div id="tooltip"></div>
 	<div id="graphic">
-		<div id="sections">
-			<section class="step">
-				<div class="title"></div>
-				<br><br>
-				<h1>What is the best genre for a Disney Movie?</h1>
-				<p>By Obinna Iwuji</p>
-				<p>
-					Disney has been making movies since the 1950s! And since then have attempted a number of different genres of movies to try and capture they eyes of billions of views. Here are almost all the movies that Disney has made since it's inception. The graph to the right shows you the number of movies made each year since it started, it gives you an idea of the volume of content disney has created as well as how productive disney has been iin the creation of their movies.
+		<h1>What is the best genre for a Disney Movie?</h1>
+		<p>By Obinna Iwuji</p>
+		<div>
+			<p>
+				Disney has been making movies since the 1950s! And since then have attempted a number of different genres of movies to try and capture they eyes of billions of views. Here are almost all the movies that Disney has made since it's inception. The graph to the right shows you the number of movies made each year since it started, it gives you an idea of the volume of content disney has created as well as how productive disney has been iin the creation of their movies.
 
-					This data came from the following Kaggle repository
-				</p>
-			</section>
+				This data came from the following Kaggle repository
+			</p>
+			<div id="timeline" class="center" ></div>
+		</div>
+			
 			<section class="step">
 				<p>
 					Here we have clustered the disney movies into 9 broad categories. The size of the bubble indicates the inflationa adjusted revenue made by the movie. And the color shows the genre of the movie. Overtime as you move between time periods you can see how certain genres such as romantic comedy, action and thriller become more popular and develop over time. Disney really does a wide catelog of movies.
-				</p>
-				<svg id= 'legend' width = '400px' height = '500px'></svg>
-			</section>
-			<section class="step">
-				<svg id= 'legend2' width = '400px' height = '500px'></svg>
-				<p>
+
 					If scroll over the bubbles you can see more information about the actual movies. It should be pointed out that some data was taken out for the sake of the visulaisation. Any movies that did not have genre or a mpaa rating were removed from this dataset.
 				</p>
+				<div id="cluster-chart" class="center"></div>
 			</section>
 			<section>
 				<p>
 					To be clearer about the comparision between genre, we can look at this graph. Here we can see perhaps unsurprisingly that musicals are the highest revenue generating movie type, with the first movie snow white being the highest grossing movie, inflation adjusted. After that we can see adventure movies are next most profitable. Perhaps a note to disney though, is that quality always beats quanitity Because Musicals still rain supreme
 				</p>
+				<div id="hist-chart" class="center"></div>
 			</section>
 			<section>
+				<br><br>
 				<h2>The End</h2>
 				<p>
 					I hope this was an interesting a maybe slightly different look at disney.
@@ -93,14 +84,13 @@
 
 					This Viz was inspired by the this scrolly story.
 				</p>
-				<span></span><span></span><span></span>
+				<div id="chart" class="center"></div>
 			</section>
 		</div>
-		<div id="vis">
 			
 		</div>
 	</div>
-	<script type="text/javascript" src="scroller.js"></script>
-	<script type="text/javascript" src="viz.js"></script>
+<!-- 	<script type="text/javascript" src="scroller.js"></script> -->
+	<script type="text/javascript" src="viz2.js"></script>
 </body>
 </html>

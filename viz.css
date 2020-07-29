@@ -1,23 +1,18 @@
-body{
-	background-color: #fff;
-	width: 100%;
-}
-
 .chart-container{
   display: inline-flex;
-}
-#chart{
-    background-color: #ccc;
-    width: 1000px;
-    height: 500px;
-    margin: 50px auto;
-}
-svg{
-	background-color: #fff;
 }
 
 circle{
 	
+}
+
+body {
+    font-family: gilroy;
+    display: flex;
+    background-color: #EAECEE;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .node:hover{
@@ -41,15 +36,58 @@ top: 0px;
 z-index: 90;
 }
 
-.step {
-margin-bottom: 200px;
-}
 
 #vis {
 display: inline-block;
-position: fixed;
+position: relative;
 top: 60px;
 z-index: 1;
 margin-left: 0;
 background-color: #111;
+}
+
+.center {
+  margin: auto;
+  width: 60%;
+  padding: 10px;
+}
+
+p {
+    width: 70%;
+    margin: auto;
+    padding: 20px;
+    font-size: 1.3em;
+    text-align: justify;
+    line-height: 1.5em;
+}
+
+h1 {
+    font-family: calibri;
+    font-size:  70px;
+    text-align: center;
+    color: #17202A ;
+    line-height:0.7em;
+    margin-top: 0px;
+}
+
+h2 {
+    font-size:  20px;
+    text-align: center;
+    color: #17202A ;
+    line-height:0.7em;
+    margin-top: 0px;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: left;
+    background: rgba(0, 0, 0, .7);
+    border-radius: 3px;
+    box-shadow: -3px 3px 15px #939393;
+    color: white;
+    padding: 6px;
+    font-family: "Merriweather";
+    font-size: 1.1em;
+    max-width: 400px;
+    z-index: 100;
 }
